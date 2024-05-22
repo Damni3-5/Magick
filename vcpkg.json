@@ -1,0 +1,14 @@
+{
+  "name": "magick",
+  "version-string": "0.0.2",
+  "dependencies": [
+    "glad",
+    "opengl",
+    "glfw3",
+    "glm",
+    {
+      "name": "imgui",
+      "features": [ "glfw-binding", "opengl3-binding" ]
+    }
+  ]
+}
