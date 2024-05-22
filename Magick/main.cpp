@@ -21,24 +21,33 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int main()
 {
-	int a = 5;
-
 	if (!glfwInit()) { std::cerr << "Failed to init GLFW" << std::endl; return -2; }
 	GLFWwindow* window = glfwCreateWindow(640, 480, "Magick", nullptr, nullptr);
-	if (!window) { std::cerr << "Failed to create GLFW window" << std::endl;  glfwTerminate(); return -1; }
+	if (!window) { std::cerr << "Failed to create GLFW window" << std::endl;  glfwTerminate(); return -2; }
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window,
+		[](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }
+	);
 	glfwSetKeyCallback(window, key_callback);
 	
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { std::cerr << "Failed to init glad" << std::endl; return -2; }
+
+	glEnable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.5, 0.5, 0.5, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		float timeValue = glfwGetTime();
+		float angle = timeValue * 50.0f;
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
