@@ -21,6 +21,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int main()
 {
+	int a = 5;
+
 	if (!glfwInit()) { std::cerr << "Failed to init GLFW" << std::endl; return -2; }
 	GLFWwindow* window = glfwCreateWindow(640, 480, "Magick", nullptr, nullptr);
 	if (!window) { std::cerr << "Failed to create GLFW window" << std::endl;  glfwTerminate(); return -1; }
