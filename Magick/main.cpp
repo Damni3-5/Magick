@@ -1,5 +1,5 @@
-#include <iostream>
-#include "src/include.h"
+#include "src/Buffer.h"
+#include "src/Random.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) 
 {
@@ -40,14 +40,37 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	std::vector<float> vertices = {
+		0.5f,  0.5f, 0.0f,
+    	0.5f, -0.5f, 0.0f,
+       -0.5f, -0.5f, 0.0f,
+       -0.5f,  0.5f, 0.0f
+	};
+	std::vector<GLuint> indices = {
+		0, 1, 3,
+		1, 2, 3
+	};
+
+	Buffer VBO(GL_ARRAY_BUFFER);
+	Buffer EBO(GL_ELEMENT_ARRAY_BUFFER);
+	VBO.setData(vertices, GL_STATIC_DRAW);
+	EBO.setData(indices, GL_STATIC_DRAW);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.5, 0.5, 0.5, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		float timeValue = glfwGetTime();
-		float angle = timeValue * 50.0f;
+		VBO.bind();
+		EBO.bind();
 
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		VBO.unbind();
+		EBO.unbind();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

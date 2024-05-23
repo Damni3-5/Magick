@@ -5,7 +5,7 @@ add_executable (main
 "src/Buffer.h"
 "src/Random.h"
 "src/Shader.cpp" "src/Shader.h"
-"src/include.h")
+"src/include.h" "src/Camera.cpp")
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assert DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
