@@ -1,10 +1,12 @@
+#include "src/Shader.h"
 #include "src/Buffer.h"
 #include "src/Random.h"
+#include "src/Game.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) 
-{
-	glViewport(0, 0, width, height);
-}
+#include <GLFW/glfw3.h>
+
+const int WIDTH = 600;
+const int HEIGHT = 400;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -22,7 +24,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int main()
 {
 	if (!glfwInit()) { std::cerr << "Failed to init GLFW" << std::endl; return -2; }
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Magick", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Magick", nullptr, nullptr);
 	if (!window) { std::cerr << "Failed to create GLFW window" << std::endl;  glfwTerminate(); return -2; }
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -31,7 +33,8 @@ int main()
 
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window,
-		[](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }
+		[](GLFWwindow* window, int width, int height) 
+			{ glViewport(0, 0, width, height); }
 	);
 	glfwSetKeyCallback(window, key_callback);
 	
@@ -41,10 +44,10 @@ int main()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	std::vector<float> vertices = {
-		0.5f,  0.5f, 0.0f,
-    	0.5f, -0.5f, 0.0f,
-       -0.5f, -0.5f, 0.0f,
-       -0.5f,  0.5f, 0.0f
+		0.5f,  0.5f,	1.0f, 1.0f,
+    	0.5f, -0.5f,	1.0f, 0.0f,
+       -0.5f, -0.5f,	0.0f, 0.0f,
+       -0.5f,  0.5f,	0.0f, 1.0f
 	};
 	std::vector<GLuint> indices = {
 		0, 1, 3,
@@ -56,6 +59,13 @@ int main()
 	VBO.setData(vertices, GL_STATIC_DRAW);
 	EBO.setData(indices, GL_STATIC_DRAW);
 
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	Game Magick(WIDTH, HEIGHT);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.5, 0.5, 0.5, 1.0);
@@ -63,9 +73,6 @@ int main()
 
 		VBO.bind();
 		EBO.bind();
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

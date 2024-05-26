@@ -1,13 +1,12 @@
 ﻿project(main)
 
-add_executable (main 
-"main.cpp"
-"src/Buffer.h"
-"src/Random.h"
-"src/Shader.cpp" "src/Shader.h"
-"src/include.h" "src/Camera.cpp")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assert DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE HEADERS "src/*.h")
+
+add_executable (main "main.cpp" ${SOURCES} ${HEADERS})
 
 find_package(OpenGL REQUIRED)
 target_link_libraries(main PRIVATE OpenGL::GL)
@@ -24,7 +23,5 @@ target_link_libraries(main PRIVATE glfw)
 find_package(imgui CONFIG REQUIRED)
 target_link_libraries(main PRIVATE imgui::imgui)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET main PROPERTY CXX_STANDARD 20)
-endif()
-
+file(COPY shaders/ DESTINATION ${CMAKE_BINARY_DIR}/shaders)
+file(COPY textures/ DESTINATION ${CMAKE_BINARY_DIR}/textures)
