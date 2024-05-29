@@ -48,3 +48,26 @@ private:
 	GLenum type;
 	GLuint id;
 };
+
+class VAO
+{
+public:
+	unsigned int ID;
+
+	VAO()
+	{
+		glGenVertexArrays(1, &this->ID);
+	}
+	~VAO() { Delete(); }
+	void LinkAttrib(unsigned int VBO_ID, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
+		glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
+		glEnableVertexAttribArray(layout);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void bind() { glBindVertexArray(this->ID); }
+	void unbind() { glBindVertexArray(0); }
+	void Delete() { glDeleteVertexArrays(1, &this->ID); }
+};

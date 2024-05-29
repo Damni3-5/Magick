@@ -2,6 +2,13 @@
 
 #include "include.h"
 #include "ResourceManager.h"
+#include "SpriteRenderer.h"
+
+#include "Buffer.h"
+#include "Random.h"
+
+#include <GLFW/glfw3.h>
+
 
 enum GameState
 {
