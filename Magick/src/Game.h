@@ -1,14 +1,13 @@
 #pragma once
 
-#include "include.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "GameObject.h"
 
 #include "Buffer.h"
 #include "Random.h"
 
 #include <GLFW/glfw3.h>
-
 
 enum GameState
 {
@@ -28,6 +27,9 @@ public:
 	void update(double dt);
 	void render();
 
+	void DoCollisions();
 private:
+	std::vector<GameObject*> mobs;
+
 	unsigned int width, height;
 };

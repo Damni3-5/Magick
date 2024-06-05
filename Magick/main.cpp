@@ -1,9 +1,7 @@
-
 #include "src/Game.h"
 
-
-const int WIDTH = 600;
-const int HEIGHT = 400;
+const int WIDTH = 1200;
+const int HEIGHT = 600;
 
 Game Magick(WIDTH, HEIGHT);
 
@@ -39,15 +37,17 @@ int main()
 	
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { std::cerr << "Failed to init glad" << std::endl; return -2; }
 
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	//glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Magick.init();
+	glLineWidth(3.0f);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.5, 0.5, 0.5, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT); //  | GL_DEPTH_BUFFER_BIT
 
 		Magick.input(1);
 		Magick.update(1);

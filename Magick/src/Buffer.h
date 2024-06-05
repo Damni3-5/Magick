@@ -49,9 +49,8 @@ private:
 	GLuint id;
 };
 
-class VAO
+struct VAO
 {
-public:
 	unsigned int ID;
 
 	VAO()
