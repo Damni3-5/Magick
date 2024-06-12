@@ -15,9 +15,9 @@ public:
 
 	glm::vec3 color;
 
-	GameObject();
 	GameObject(glm::vec3 color, Hitbox hitbox, Texture2D texture);
-	virtual void draw(SpriteRenderer& renderer, SpriteRenderer* BoxRenderer, bool show_hitbox);
+	virtual void DrawSprite2D(SpriteRenderer& renderer);
+	virtual void DrawHitBox2D(SpriteRenderer& renderer);
 private:
 	VAO vao;
 };

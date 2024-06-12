@@ -36,11 +36,12 @@ void Game::init()
 
 	Renderer = new SpriteRenderer(ResourceManager::GetShader("base"));
 	RenderBox = new SpriteRenderer(ResourceManager::GetShader("hitbox"));
-	Player = new GameObject(glm::vec3(1), Hitbox(glm::vec2(this->width / 2, this->height / 2), glm::vec2(150)), ResourceManager::GetTexture("pudge"));
+	Hitbox box(glm::vec2(this->width / 2, this->height / 2), glm::vec2(50), 0);
+	Player = new GameObject(glm::vec3(1), box, ResourceManager::GetTexture("hand"));
 	
 	for (size_t i = 0; i < 1; i++)
 	{
-		mobs.push_back(new GameObject(glm::vec3(1), Hitbox(glm::vec2(Random::getFloat(0, this->width), Random::getFloat(0, this->height)), glm::vec2(50)), ResourceManager::GetTexture("pudge")));
+		mobs.push_back(new GameObject(glm::vec3(1), Hitbox(glm::vec2(Random::getFloat(0, this->width), Random::getFloat(0, this->height)), glm::vec2(50), 0), ResourceManager::GetTexture("pudge")));
 	}
 }
 
@@ -79,14 +80,15 @@ bool CheckCollision(GameObject& one, GameObject& two);
 void Game::render()
 {
 	//Renderer->DrawSprite2D(ResourceManager::GetTexture("hand"), glm::vec2(this->width / 2, this->height / 2), glm::vec2(400.0, 200), 0, glm::vec3(1.0));
-	//RenderBox->DrawSprite2D(ResourceManager::GetTexture("hand"), glm::vec2(this->width / 2, this->height / 2), glm::vec2(400.0, 200), 0, glm::vec3(1.0));
 	
 	for (auto& obj1 : mobs)
 	{
-		obj1->draw(*Renderer, RenderBox, true);
+		obj1->DrawSprite2D(*Renderer);
+		obj1->DrawHitBox2D(*RenderBox);
 	}
 	std::cout << ".";
-	Player->draw(*Renderer, RenderBox, true);
+	//Player->DrawSprite2D(*Renderer);
+	Player->DrawHitBox2D(*RenderBox);
 }
 
 void Game::DoCollisions()
